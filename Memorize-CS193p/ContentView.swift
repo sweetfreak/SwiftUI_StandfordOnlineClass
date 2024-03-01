@@ -37,7 +37,7 @@ struct ContentView: View {
           
         }
         .foregroundColor(.orange)
-        .padding()
+        .padding(.all)
         
         //the curly bracket that this is in, is a Computed Property. Read-only, but still a "var", but read-only.
         // VStack {
