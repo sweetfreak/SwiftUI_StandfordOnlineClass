@@ -66,47 +66,59 @@ struct ContentView: View {
     
 struct CardView: View {
     //for all structs, every var has to have a value!! you can give it a default value though, like below:
-    var isFaceUp: Bool = false
+    @State var isFaceUp = false
+    
+    //@State is for TEMP purpose - it creates a pointer, so it can change it the var for now, but not like "really* change it, permanently
+    //This is important becasue VIEWS ARE IMMUTABLE (they can't mutate/change)
+    
     //this var has a value: it's a computed value
+    //views are read only!
     var body: some View {
-            ZStack {
-                /*Image(systemName: "globe")
-                 .imageScale(.large)
-                 .foregroundStyle(.tint)
-                 .background(.purple) */
-                if isFaceUp {
-                    
-                    
-                    RoundedRectangle(cornerRadius: 25.0)
-                        .foregroundColor(.purple)
-                    RoundedRectangle(cornerRadius: 25.0)
-                    
-                        .strokeBorder(lineWidth: 3)
-                    
-                    //this VStack is within a ZStack
-                    VStack{
-                        Text("Light up, my dude!")
-                            .foregroundColor(.green)
-                            .bold()
-                        Text("🚬😶‍🌫️").font(.largeTitle)
-                            .padding()
-                    }
-                } else {
-                    //no foreground color specified for outer ring, so it gets the foreground from above
+        ZStack {
+            let base = RoundedRectangle(cornerRadius: /*@START_MENU_TOKEN@*/25.0/*@END_MENU_TOKEN@*/)
+            
+            if isFaceUp {
                 
-                    RoundedRectangle(cornerRadius: 25.0)
-                     //   .strokeBorder(lineWidth: 3)
-                    
-                    //this VStack is within a ZStack
-                    VStack{
-                        Text("BOGUS ")
-                            .foregroundColor(.blue)
-                            .bold()
-                        Text("😵😵‍💫").font(.largeTitle)
-                            .padding()
+                
+                //RoundedRectangle(cornerRadius: 25.0)
+                //instead use:
+                base.foregroundColor(.purple)
+               // RoundedRectangle(cornerRadius: 25.0)
+                base
+                    .strokeBorder(lineWidth: 3)
+                
+                //this VStack is within a ZStack
+                VStack{
+                    Text("Light up, my dude!")
+                        .foregroundColor(.green)
+                        .bold()
+                    Text("🚬😶‍🌫️").font(.largeTitle)
+                        
+                }
+            } else {
+                //no foreground color specified for outer ring, so it gets the foreground from above
+                
+               // RoundedRectangle(cornerRadius: 25.0)
+                //   .strokeBorder(lineWidth: 3)
+                base//.fill() - the fill isn't necessary, because that's default
+                //this VStack is within a ZStack
+                VStack{
+                    Text("BOGUS ")
+                        .foregroundColor(.blue)
+                        .bold()
+                    Text("😵‍💫").font(.largeTitle)
+                            
                     }
                 }
+            //usually would need end parentheses here for Zstack, but with trailing closure syntax, you do not!
             }
+        //this is where the Z-Stack ends
+        .onTapGesture /* (you could put anything here in () if you want) */ {
+           //isFaceUp = !isFaceUp // THIS DOESNT WORK W/O @Statate - because self is immutable(can't be changed)
+            //alternatively:
+            isFaceUp.toggle() //this var is a struct! so you can use functiosn on it.
+            
+        }  //note the trailing closure syntax :)
         }
 }
     
