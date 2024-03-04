@@ -24,16 +24,24 @@ import SwiftUI
 // Views are the most important part of SwiftUI, it can do a million different things
 
 struct ContentView: View {
-    
-    
+    //can do Array<String> ORRRRR [String] - but you can always let Swift infer the type, too, not declare it at all
+    let emojis: [String] = ["😶‍🌫️", "🚬", "😵‍💫",  "🍁", "🤪"]
+
     //"some" is the type - like an int or a string - a "some" is more vague. COmbined with View, it means it can be any kind of struct, as long as it behaves like a View.  There are thousands of Views. the "some" says "excecute this code, see what it returns, and then use that"
     var body: some View {
         //some view just lets you use multiple types and things in the body
         HStack {
-            CardView(isFaceUp: true)
-            CardView()
-            CardView()
-            CardView(isFaceUp: true)
+            //can't do FOR loops instead of a viewbuilder, like H-stack. INSTEAD we do a ForEach view!
+            ForEach(emojis.indices, id: \.self) { index in //this viewbuilder has an argument - the index
+                //this foreach is a viewbuilder of its own!
+                //the viewbuilder will contain a VIEW... FOR EACH of the things
+                CardView(content: emojis[index])
+            }
+            
+//            CardView(content: emojis[0], isFaceUp: true)
+//            CardView(content: emojis[1])
+//            CardView(content: emojis[2])
+//            CardView(content: emojis[3], isFaceUp: true)
           
         }
         .foregroundColor(.orange)
@@ -66,6 +74,7 @@ struct ContentView: View {
     
 struct CardView: View {
     //for all structs, every var has to have a value!! you can give it a default value though, like below:
+    let content: String
     @State var isFaceUp = false
     
     //@State is for TEMP purpose - it creates a pointer, so it can change it the var for now, but not like "really* change it, permanently
@@ -89,10 +98,8 @@ struct CardView: View {
                 
                 //this VStack is within a ZStack
                 VStack{
-                    Text("Light up, my dude!")
-                        .foregroundColor(.green)
-                        .bold()
-                    Text("🚬😶‍🌫️").font(.largeTitle)
+                    
+                    Text(content).font(.largeTitle)
                         
                 }
             } else {
@@ -102,13 +109,11 @@ struct CardView: View {
                 //   .strokeBorder(lineWidth: 3)
                 base//.fill() - the fill isn't necessary, because that's default
                 //this VStack is within a ZStack
-                VStack{
-                    Text("BOGUS ")
-                        .foregroundColor(.blue)
-                        .bold()
-                    Text("😵‍💫").font(.largeTitle)
-                            
-                    }
+//                VStack{
+//                    
+//                    Text(content).font(.largeTitle)
+//                            
+//                    }
                 }
             //usually would need end parentheses here for Zstack, but with trailing closure syntax, you do not!
             }
